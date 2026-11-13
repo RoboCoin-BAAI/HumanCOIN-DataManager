@@ -1,0 +1,32 @@
+[
+  {
+    "rows": 10000,
+    "fullBytes": 68534482,
+    "indexBytes": 6384481,
+    "indexGzipBytes": 183451,
+    "oneTierBytes": 2127845,
+    "oneTierGzipBytes": 53128,
+    "medianParseMs": 22.208221999999978,
+    "medianFilterSortPageMs": 5.635252999999977
+  },
+  {
+    "rows": 50000,
+    "fullBytes": 342672442,
+    "indexBytes": 31922441,
+    "indexGzipBytes": 913361,
+    "oneTierBytes": 10637310,
+    "oneTierGzipBytes": 261746,
+    "medianParseMs": 120.6163260000003,
+    "medianFilterSortPageMs": 34.608498000000054
+  },
+  {
+    "rows": 100000,
+    "fullBytes": 685344882,
+    "indexBytes": 63844881,
+    "indexGzipBytes": 1825733,
+    "oneTierBytes": 21274645,
+    "oneTierGzipBytes": 522500,
+    "medianParseMs": 222.45690399999967,
+    "medianFilterSortPageMs": 95.20136199999979
+  }
+]

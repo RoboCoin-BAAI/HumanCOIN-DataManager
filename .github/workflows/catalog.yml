@@ -1,0 +1,75 @@
+name: Refresh HumanCOIN catalog
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: catalog-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Ensure video preview tools
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+      - run: python scripts/sync_catalog.py
+      - run: npm test && npm run check
+      # GITHUB_TOKEN commits do not trigger a second push workflow; deploy in this workflow.
+      - name: Commit catalog snapshot
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data sync-state
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore: refresh HumanCOIN catalog'
+            git push
+          fi
+      - name: Record deployed source revision
+        id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: refreshed-catalog
+          path: docs/data
+  deploy:
+    needs: refresh
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.refresh.outputs.source_sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: refreshed-catalog
+          path: docs/data
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - uses: actions/deploy-pages@v4
+        id: deployment

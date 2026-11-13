@@ -1,0 +1,16 @@
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+# Supplied reference checkout and original design remain local reference materials.
+RoboCOIN-DataManager/
+humancoin-datamanager.html
+png/
+# Local agent and credential directories
+.agents/
+.codex/
+.aws/
