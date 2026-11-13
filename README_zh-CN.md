@@ -47,9 +47,7 @@ npm run check
 使用 Python 3.10–3.13，可直接安装 PyPI 包，无需克隆源码：
 
 ```bash
-pip install humancoin-lerobot
-# 使用 ModelScope 时：
-pip install "humancoin-lerobot[modelscope]"
+pip install -U "humancoin-lerobot>=0.1.1"
 ```
 
-网页按下载平台显示对应安装命令；随后执行生成的 `humancoin-download` 命令。
+该安装同时支持 Hugging Face 和 ModelScope；随后执行生成的 `humancoin-download` 命令。
