@@ -41,3 +41,15 @@ npm run check
 下载命令使用 HumanCOIN-LeRobot 工具，门户自身不代理下载。申请权限由数据平台的仓库设置控制，网页提示不会启用权限限制。
 
 完整架构、同步参数及限制见 [README.md](README.md)。
+
+## 安装下载工具
+
+使用 Python 3.10–3.13，可直接安装 PyPI 包，无需克隆源码：
+
+```bash
+pip install humancoin-lerobot
+# 使用 ModelScope 时：
+pip install "humancoin-lerobot[modelscope]"
+```
+
+网页按下载平台显示对应安装命令；随后执行生成的 `humancoin-download` 命令。
